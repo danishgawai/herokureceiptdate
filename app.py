@@ -34,8 +34,6 @@ def img2date(path):
                 b = j
             else:
                 continue
-    date_re = re.compile(
-        r"(\d{1,2}((/|-|\.)|\s)[a-zA-Z]{3}((/|-|\.)|\s)\d{2,4})|([a-zA-Z]{3}(')?\s?\d{2}((,|-|\.|,)|\s)\d{2,4})|(\d{1,2}(/|-|\.)\d{2}(/|-|\.)\d{2,4})")
     img = cv2.imread(path, 0)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, a, b)
     extractedInformation = pytesseract.image_to_string(img)
@@ -66,8 +64,7 @@ def upload():
         return datesearch.group()
         
 
-        # Processing date
-        return date
+        
     return None
 
 
