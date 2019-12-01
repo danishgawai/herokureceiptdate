@@ -40,8 +40,13 @@ def img2date(path):
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, a, b)
     extractedInformation = pytesseract.image_to_string(img)
     # print(extractedInformation)
-    date = date_re.search(extractedInformation)
-    return date
+    return extractedInformation
+
+def datefinder(string):
+     date_re = re.compile(r"(\d{1,2}((/|-|\.)|\s)[a-zA-Z]{3}((/|-|\.)|\s)\d{2,4})|([a-zA-Z]{3}(')?\s?\d{2}((,|-|\.|,)|\s)\d{2,4})|(\d{1,2}(/|-|\.)\d{2}(/|-|\.)\d{2,4})")
+     date = date_re.search(string)
+     return date
+    
 
 @app.route('/predict', methods=['GET', 'POST'])
 def upload():
@@ -56,7 +61,10 @@ def upload():
         f.save(file_path)
 
         # Make prediction
-        date = img2date(file_path)
+        string = img2date(file_path)
+        datesearch = datefinder(string)
+        return datesearch.group()
+        
 
         # Processing date
         return date
